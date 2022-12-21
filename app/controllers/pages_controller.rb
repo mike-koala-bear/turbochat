@@ -1,11 +1,14 @@
 class PagesController < ApplicationController
   after_action :set_status
   before_action :recent_messages, only: [:home]
+
   def home
     recent_messages
+    @online_users = User.where.not(status: User.statuses[:offline]).count
   end
 
   private
+
   def set_status
     current_user&.update!(status: User.statuses[:offline])
   end
